@@ -1,0 +1,51 @@
+<DOCTYPE html>
+<html>
+  <head>
+    <title>Hangman</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="hangman.css">
+    <script defer type="text/javascript" src="hangman.js"></script>
+  </head>
+  <body>
+    <h1>Hangman</h1>
+
+    <div class="hangman-principal">
+
+      <center> <img width=300 height=300 src="./img/1.png"> </center>
+
+      <div class="principal-word"> 
+        <ul class="principal-word-items">
+
+          <!-- the addToDoItem function should add a new list item here -->
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="hangman-panel">
+      
+      <h2>You think you guess? Choose a letter:</h2>
+      <div class="form">
+          <input type="text" id="hangman-input"></input>
+          <input type="submit" id="try-button" value="Try"></input>
+      </div>
+
+      <div class="used-letters"> 
+        <h2>Used Letters</h2>
+        <ul class="used-letters-items">
+
+        </ul>
+      </div>
+
+      <div class="done-list">
+        <h2 id="final_win">Congratulations!</h2>
+        <h2 id="final_lose">Loser!</h2>
+        <button id="play-button">Play Again</button>
+      </div>
+
+    </div>
+    <p class="finalWord"></p>
+    <p class="testWord"></p>
+
+  </body>
+</html>
