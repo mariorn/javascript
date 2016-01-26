@@ -19,17 +19,7 @@ window.onload = function() {
     return allWords[ Math.round( Math.random() * allWords.length ) - 1];
   }
 
-  //Función que imprime en pantalla la palabra actual
-  function printWord(word){
 
-    for (var i = 0 ; i < word.length; i++) {
-      var nuevaLinea = document.createElement("li");
-      nuevaLinea.textContent = "_";
-      var wordItems = document.getElementsByClassName("principal-word-items")[0];
-      wordItems.appendChild(nuevaLinea);
-    }
-
-  }
 
   //Función que inicialia la palabra a adivinar
   function initializeWord(){
@@ -84,7 +74,20 @@ window.onload = function() {
 
   }
 
-  //Función con la que se obtienen la palabra actual
+
+  //Función que imprime en pantalla la palabra actual
+  function printWord(word){
+
+    for (var i = 0 ; i < word.length; i++) {
+      var nuevaLinea = document.createElement("li");
+      nuevaLinea.textContent = "_";
+      var wordItems = document.getElementsByClassName("principal-word-items")[0];
+      wordItems.appendChild(nuevaLinea);
+    }
+
+  }
+
+  //Función con la que se obtienen la palabra
   function getActualWord(){
 
     var sizeWord = document.getElementsByClassName("principal-word-items")[0].getElementsByTagName("li").length;
