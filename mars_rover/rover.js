@@ -41,7 +41,7 @@ function getNewPosition(rover) {
       break;
   }
 
-return pos;
+  return pos;
 }
 
 // Imprime por consola el mapa 10x10 con los vehículos y los obstáculos
@@ -51,66 +51,50 @@ function muestraMapa (matriz){
   }
 }
 
+//Función que moverá el rover a la nueva posición
+function moveRover(rover, matriz){
+  var obstaculo = false;
+  var pos_actual = [ rover.position[0], rover.position[1] ];
+  var pos_siguiente = [];
+
+  pos_siguiente = getNewPosition(rover);
+  if(!existeObstaculo(matriz, pos_siguiente)){
+    goForward(rover, pos_siguiente);
+    actualizaMapa(matriz, rover, pos_actual);
+  }
+  else{
+    alert("OBSTACULO "+ matriz[pos_siguiente[0]][pos_siguiente[1]]+" DETECTADO. FINSTRUCCION." );
+    obstaculo = true;
+  }
+  return obstaculo;
+}
+
+
 // Función principal que procesa todas las instrucciones que introducimos
 function procesaInstrucciones (instrucciones, rover, matriz){
 
   var obstaculo = false;
   for (var i = 0; i < instrucciones.length && !obstaculo; i++){
 
-    var pos_actual = [ rover.position[0], rover.position[1] ];
-    var pos_siguiente = [];
-
     switch (instrucciones[i].toLowerCase()){
       case 'f':
         rover.direction = "N";
-        pos_siguiente = getNewPosition(rover);
-        if(!existeObstaculo(matriz, pos_siguiente)){
-          goForward(rover, pos_siguiente);
-          actualizaMapa(matriz, rover, pos_actual);
-        }
-        else{
-          alert("OBSTACULO "+ matriz[pos_siguiente[0]][pos_siguiente[1]]+" DETECTADO. FIN DE INSTRUCCION." );
-          obstaculo = true;
-        }
+        obstaculo = moveRover(rover, matriz);
       break;
       case 'b':
         rover.direction = "S";
-        pos_siguiente = getNewPosition(rover);
-        if(!existeObstaculo(matriz, pos_siguiente)){
-          goForward(rover, pos_siguiente);
-          actualizaMapa(matriz, rover, pos_actual);
-        }
-        else{
-          alert("OBSTACULO "+matriz[pos_siguiente[0], pos_siguiente[1]]+" DETECTADO. FIN DE INSTRUCCION." );
-          obstaculo = true;
-        }
+        obstaculo = moveRover(rover, matriz);
       break;
       case 'l':
         rover.direction = "W";
-        pos_siguiente = getNewPosition(rover);
-        if(!existeObstaculo(matriz, pos_siguiente)){
-          goForward(rover, pos_siguiente);
-          actualizaMapa(matriz, rover, pos_actual);
-        }
-        else{
-          alert("OBSTACULO "+matriz[pos_siguiente[0], pos_siguiente[1]]+" DETECTADO. FIN DE INSTRUCCION." );
-          obstaculo = true;
-        }
+        obstaculo = moveRover(rover, matriz);
       break;
       case 'r':
         rover.direction = "E";
-        pos_siguiente = getNewPosition(rover);
-        if(!existeObstaculo(matriz, pos_siguiente)){
-          goForward(rover, pos_siguiente);
-          actualizaMapa(matriz, rover, pos_actual);
-        }
-        else{
-          alert("OBSTACULO "+matriz[pos_siguiente[0], pos_siguiente[1]]+" DETECTADO. FIN DE INSTRUCCION." );
-          obstaculo = true;
-        }
+        obstaculo = moveRover(rover, matriz);
       break;
       default:
-        alert("No se procesa instruccion "+ instrucciones[i] + " ya que no esta contemplada.")
+        alert("No se procesa instruccion "+ instrucciones[i] + " ya que no está contemplada.")
       break;
     }
   }
@@ -139,6 +123,8 @@ function inicializaMapa (matriz, roverX, roverY){
   matriz[roverY.position[0]][roverY.position[1]] = roverY.name;
 
 }
+
+
 
 
 

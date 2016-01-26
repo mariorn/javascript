@@ -16,7 +16,7 @@ window.onload = function() {
 
   function chooseWord(){
     var allWords = ["TELEVISION","PACHYDERM","INTELIGENT","PLASTIC","WALLET","SWEATSHIRT","MOTIVATION","IRONHACK", "TABLET", "RUNNING"];
-    return allWords[ Math.round( Math.random() * 10 ) - 1];
+    return allWords[ Math.round( Math.random() * allWords.length ) - 1];
   }
 
 
@@ -24,19 +24,16 @@ window.onload = function() {
   function initializeWord(){
 
     var aux = chooseWord();
-    var palabraFinal = aux;
+    var finalWord = aux;
 
     document.getElementsByClassName("finalWord")[0].textContent = aux;
 
-    for (var i = 0 ; i < palabraFinal.length; i++) {
+    for (var i = 0 ; i < finalWord.length; i++) {
       var nuevaLinea = document.createElement("li");
       nuevaLinea.textContent = "_";
       var wordItems = document.getElementsByClassName("principal-word-items")[0];
       wordItems.appendChild(nuevaLinea);
-    }
-
-    for (var j = 0; j < aux.length ; j++) {
-      aux = aux.replace(aux[j], "_");
+      aux = aux.replace(aux[i], "_");
     }
 
     document.getElementsByClassName("testWord")[0].textContent = aux;
@@ -129,41 +126,60 @@ window.onload = function() {
     return cont;
   }
 
-  //Función que comprueba si la letra introducida pertenece a la palabra a adivinar
-  function checkLetter() {
+  //Función que valida si la palabra es igual a la ganadora
+  function checkWin(nuevaPal, finalWord){
+    if (nuevaPal === finalWord) {
+      document.getElementsByClassName("done-list")[0].style.display = "block";
+      document.getElementById("final_win").style.display = "block";
+    }
+  }
 
-    var letra = document.getElementById("hangman-input").value.toUpperCase();
+  //Función que valida si has superado el límite de intentos
+  function checkIntentos(){
+    if (getIntento() === 9) {
+      document.getElementsByClassName("done-list")[0].style.display = "block";
+      document.getElementById("final_lose").style.display = "block";
+    }
+  }
+
+  //Función que añade letra bien en la lista como válida o como inválida
+  function addLetra(letra){
+    //Incluimos letra en la lista de letras utilizadas
+    var nuevaLinea = addList("used-letters-items", letra)
     var finalWord = document.getElementsByClassName("finalWord")[0].textContent;
     var testWord = document.getElementsByClassName("testWord")[0].textContent;
 
-    if(!isUsed(letra)){
+    //Si la letra está contenida en la palabra -> descubrimos y almacenamos letra como correcta
+    if(finalWord.indexOf(letra) >= 0 && letra !== ""){
+      var nuevaPal = descubreLetra(letra);
+      nuevaLinea.classList.add("win");
+      checkWin(nuevaPal, finalWord);
 
-      //Incluimos letra en la lista de letras utilizadas
-      var nuevaLinea = addList("used-letters-items", letra);
-
-      //Si la letra está contenida en la palabra -> descubrimos y almacenamos letra como correcta
-      if(finalWord.indexOf(letra) >= 0 && letra !== ""){
-        var nuevaPal = descubreLetra(letra);
-        nuevaLinea.classList.add("win");
-        if (nuevaPal === finalWord) {
-          document.getElementsByClassName("done-list")[0].style.display = "block";
-          document.getElementById("final_win").style.display = "block";
-        }
+    }
+    else{
+      //Si la letra NO está contenida en la palabra -> nueva imagen y almacenamos letra comincorrecta
+      document.getElementsByTagName("img")[0].src = nextImg();
+      nuevaLinea.classList.add("lose");
+      checkIntentos();
+    }
         
-      }
-      else{
-      //Si la letra NO está contenida en la palabra -> nueva imagen y almacenamos letra como incorrecta
-        document.getElementsByTagName("img")[0].src = nextImg();
-        nuevaLinea.classList.add("lose");
+  }
 
-        if (getIntento() === 9) {
-          document.getElementsByClassName("done-list")[0].style.display = "block";
-          document.getElementById("final_lose").style.display = "block";
-        }
-      }
-    }else{
+
+
+  //Función que comprueba si la letra introducida pertenece a la palabra a adivinar
+  function checkLetter(){
+
+    var letra = document.getElementById("hangman-input").value.toUpperCase();
+
+    if(!isUsed(letra)){
+      addLetra(letra);
+    }
+    else{
       alert("The letter "+ letra + " has been used. Try another.");
     }
+
+    //Eliminamos la letra del input
     document.getElementById("hangman-input").value = "";
 
   }
