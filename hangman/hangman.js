@@ -19,24 +19,31 @@ window.onload = function() {
     return allWords[ Math.round( Math.random() * allWords.length ) - 1];
   }
 
+  //Función que imprime en pantalla la palabra actual
+  function printWord(word){
+
+    for (var i = 0 ; i < word.length; i++) {
+      var nuevaLinea = document.createElement("li");
+      nuevaLinea.textContent = "_";
+      var wordItems = document.getElementsByClassName("principal-word-items")[0];
+      wordItems.appendChild(nuevaLinea);
+    }
+
+  }
 
   //Función que inicialia la palabra a adivinar
   function initializeWord(){
 
     var aux = chooseWord();
-    var finalWord = aux;
 
     document.getElementsByClassName("finalWord")[0].textContent = aux;
 
-    for (var i = 0 ; i < finalWord.length; i++) {
-      var nuevaLinea = document.createElement("li");
-      nuevaLinea.textContent = "_";
-      var wordItems = document.getElementsByClassName("principal-word-items")[0];
-      wordItems.appendChild(nuevaLinea);
+    for (var i = 0 ; i < aux.length; i++) {
       aux = aux.replace(aux[i], "_");
     }
 
-    document.getElementsByClassName("testWord")[0].textContent = aux;
+    printWord(aux);
+
   }
 
   //Función que elimina los elementos de la lista
@@ -77,11 +84,24 @@ window.onload = function() {
 
   }
 
+  //Función con la que se obtienen la palabra actual
+  function getActualWord(){
+
+    var sizeWord = document.getElementsByClassName("principal-word-items")[0].getElementsByTagName("li").length;
+    var actualWord = "";
+
+    for(var i = 0 ; i < sizeWord ; i++){
+      actualWord += document.getElementsByClassName("principal-word-items")[0].getElementsByTagName("li")[i].textContent;
+    }
+
+    return actualWord;
+  }
+
   //Función que pinta en la pantalla la letra que has adivinado.
   function descubreLetra (letra){
 
     var palabra = document.getElementsByClassName("finalWord")[0].textContent;
-    var palabraCod = document.getElementsByClassName("testWord")[0].textContent;
+    var palabraCod = getActualWord();
     var cambia = palabraCod.split("");
 
     for( var i = 0; i < palabra.length; i++){
@@ -91,7 +111,6 @@ window.onload = function() {
       }
     }
 
-    document.getElementsByClassName("testWord")[0].textContent = cambia.join("");
     return cambia.join("");
   }
 
@@ -147,7 +166,7 @@ window.onload = function() {
     //Incluimos letra en la lista de letras utilizadas
     var nuevaLinea = addList("used-letters-items", letra)
     var finalWord = document.getElementsByClassName("finalWord")[0].textContent;
-    var testWord = document.getElementsByClassName("testWord")[0].textContent;
+    var testWord = getActualWord();
 
     //Si la letra está contenida en la palabra -> descubrimos y almacenamos letra como correcta
     if(finalWord.indexOf(letra) >= 0 && letra !== ""){
